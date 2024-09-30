@@ -1,0 +1,13 @@
+﻿<Window x:Class="StudPracticeAutumn2024.MainWindow"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:local="clr-namespace:StudPracticeAutumn2024"
+        mc:Ignorable="d"
+        Title="Scholl Service" MaxHeight="1080" MaxWidth="720" MinHeight="1080" MinWidth="720" Icon="Resource/school_logo.ico">
+    <Grid>
+        <Frame x:Name="MainFrame" NavigationUIVisibility="Hidden" Grid.RowSpan="3"></Frame>
+        
+    </Grid>
+</Window>
