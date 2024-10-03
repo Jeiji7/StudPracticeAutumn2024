@@ -1,4 +1,5 @@
 ﻿using StudPracticeAutumn2024.Controls;
+using StudPracticeAutumn2024.DATABASE;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -13,37 +14,32 @@ using System.Windows.Media;
 using System.Windows.Media.Imaging;
 using System.Windows.Navigation;
 using System.Windows.Shapes;
-using StudPracticeAutumn2024.DATABASE;
 
 namespace StudPracticeAutumn2024.Pages
 {
     /// <summary>
-    /// Логика взаимодействия для EnterPage.xaml
+    /// Логика взаимодействия для ClientViewService.xaml
     /// </summary>
-    public partial class EnterPage : Page
+    public partial class ClientViewService : Page
     {
-        public Action OnItemRemoved { get; set; }
-        public EnterPage()
+        public ClientViewService()
         {
             InitializeComponent();
-            OnItemRemoved = () =>
-            {
-                UpdatePage();
-            };
             UpdatePage();
         }
         public void UpdatePage()
         {
-            ServiceWpar.Children.Clear();
+            ClientServiceWpar.Children.Clear();
             foreach (var item in App.db.Service)
             {
-                ServiceWpar.Children.Add(new ServiceUserControl(item,OnItemRemoved));
-            }  
+                ClientServiceWpar.Children.Add(new ClientServiceUserControl(item));
+            }
         }
 
-        private void Button_Click_AddService(object sender, RoutedEventArgs e)
+
+        private void Button_Click_ViewService(object sender, RoutedEventArgs e)
         {
-            NavigationService.Navigate(new Pages.AddService());
+
         }
     }
 }

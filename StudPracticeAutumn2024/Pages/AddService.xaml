@@ -1,15 +1,15 @@
-﻿<Page x:Class="StudPracticeAutumn2024.Pages.EditService"
+﻿<Page x:Class="StudPracticeAutumn2024.Pages.AddService"
       xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
       xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
       xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
       xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
       xmlns:local="clr-namespace:StudPracticeAutumn2024.Pages"
       mc:Ignorable="d" 
-      d:DesignHeight="1080" d:DesignWidth="720"
-      Title="EditService">
+       d:DesignHeight="1080" d:DesignWidth="720"
+      Title="AddService">
 
-    <Grid Background="AliceBlue">
-        <Grid.RowDefinitions>
+    <Grid Background="AliceBlue" >
+        <Grid.RowDefinitions >
             <RowDefinition Height="8*"/>
             <RowDefinition Height="8*"/>
             <RowDefinition Height="11*"/>
@@ -17,10 +17,12 @@
         <Grid Grid.RowSpan="3">
             <Image Source="/Resource/Fon2.jpg"/>
         </Grid>
+        <TextBlock Grid.Row="0" HorizontalAlignment="Center" VerticalAlignment="Center" FontSize="48">Добавление услуги</TextBlock>
         <Border Grid.Row="1" BorderBrush="#A37D4E" BorderThickness="2" Margin="3">
             <Grid Background="#e7fabf">
                 <StackPanel Orientation="Horizontal">
                     <StackPanel HorizontalAlignment="Left" VerticalAlignment="Center">
+                        <TextBlock Margin="20 0" FontSize="20" Width="200" Height="30">Картинка</TextBlock>
                         <Button Margin="20 0 20 0" Click="Button_Click_Image">
                             <Image  Width="180" Height="180" x:Name="ImageService"></Image>
                         </Button>

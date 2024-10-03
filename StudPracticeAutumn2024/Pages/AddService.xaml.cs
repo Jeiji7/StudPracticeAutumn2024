@@ -2,9 +2,7 @@
 using StudPracticeAutumn2024.DATABASE;
 using System;
 using System.Collections.Generic;
-using System.IO;
 using System.Linq;
-using System.Runtime.ConstrainedExecution;
 using System.Text;
 using System.Threading.Tasks;
 using System.Windows;
@@ -20,31 +18,27 @@ using System.Windows.Shapes;
 namespace StudPracticeAutumn2024.Pages
 {
     /// <summary>
-    /// Логика взаимодействия для EditService.xaml
+    /// Логика взаимодействия для AddService.xaml
     /// </summary>
-    public partial class EditService : Page
+    public partial class AddService : Page
     {
-        private Service ser;
-        private ServicePhoto serPhoto;
         private string selectedImagePath;
         public string folderName = "Услуги школы";
         int charactersToRemove = 61; // Количество символов для удаления в начале строки
-        public EditService(Service service)
+        public AddService()
         {
-            ser = service;
             InitializeComponent();
-            var imagesBD = App.db.ServicePhoto.FirstOrDefault(x => x.ID == ser.ServicePhotoID).PhotoPath.ToString();
-            string folderName = "StudPracticeAutumn2024/Resource";
-            string projectDirectory = Directory.GetParent(Environment.CurrentDirectory).Parent.Parent.FullName;
-            string fullPath = System.IO.Path.Combine(projectDirectory, folderName, imagesBD);
+            //var imagesBD = App.db.ServicePhoto.FirstOrDefault(x => x.ID == ser.ServicePhotoID).PhotoPath.ToString();
+            //string folderName = "DemoEgor2024/Resource";
+            //string projectDirectory = Directory.GetParent(Environment.CurrentDirectory).Parent.Parent.FullName;
+            //string fullPath = System.IO.Path.Combine(projectDirectory, folderName, imagesBD);
 
-            //Заменяем обратные слеши на прямые слеши
-            ImageService.Source = new BitmapImage(new Uri(fullPath, UriKind.Absolute));
-            TitleServiceTBox.Text = ser.Title.ToString();
-            CostTBox.Text = ser.Cost.ToString();
-            TimeTBox.Text = ser.DurationInMinutes.ToString();
-            DiscountTBox.Text = ser.Discount.ToString();
-            selectedImagePath = imagesBD;
+            ////Заменяем обратные слеши на прямые слеши
+            //ImageService.Source = new BitmapImage(new Uri(fullPath, UriKind.Absolute));
+            //TitleServiceTBox.Text = ser.Title.ToString();
+            //CostTBox.Text = ser.Cost.ToString();
+            //TimeTBox.Text = ser.DurationInMinutes.ToString();
+            //DiscountTBox.Text = ser.Discount.ToString();
         }
 
         private void Button_Click_Exit(object sender, RoutedEventArgs e)
@@ -54,6 +48,15 @@ namespace StudPracticeAutumn2024.Pages
 
         private void Button_Click_Save(object sender, RoutedEventArgs e)
         {
+            Service ser = new Service();
+            //ser.Title = TitleServiceTBox.Text;
+            //ser.Cost = Convert.ToDecimal(CostTBox.Text);
+            //ser.DurationInMinutes = Convert.ToInt32(TimeTBox.Text);
+            //ser.Discount = Convert.ToInt32(DiscountTBox.Text);
+            //ser.ServicePhotoID = App.db.ServicePhoto.FirstOrDefault(x => x.PhotoPath == selectedImagePath).ID;
+            //App.db.Service.Add(ser);
+            //App.db.SaveChanges();
+            //NavigationService.Navigate(new Pages.EnterPage());
             try
             {
                 if (TitleServiceTBox.Text == "" || (Convert.ToDecimal(CostTBox.Text) <= 0 || CostTBox.Text == ""))
@@ -82,6 +85,7 @@ namespace StudPracticeAutumn2024.Pages
                     throw new Exception("вы не выбрали фото, повторите попытку");
                 else
                     ser.ServicePhotoID = App.db.ServicePhoto.FirstOrDefault(x => x.PhotoPath == selectedImagePath).ID;
+                App.db.Service.Add(ser);
                 App.db.SaveChanges();
                 NavigationService.Navigate(new Pages.EnterPage());
             }
@@ -93,7 +97,6 @@ namespace StudPracticeAutumn2024.Pages
             {
                 MessageBox.Show("Ошибка: " + ex.Message);
             }
-
         }
         private void Button_Click_Image(object sender, RoutedEventArgs e)
         {
