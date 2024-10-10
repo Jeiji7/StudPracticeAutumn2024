@@ -7,7 +7,7 @@
              mc:Ignorable="d" 
              d:DesignHeight="200" d:DesignWidth="680">
     <Border BorderBrush="#A37D4E" BorderThickness="2" Margin="3">
-        <Grid Background="#e7fabf">
+        <Grid Background="#e7fabf" x:Name="myGrid">
             <Frame x:Name="UserControl"></Frame>
             <StackPanel Orientation="Horizontal">
                 <StackPanel HorizontalAlignment="Left" VerticalAlignment="Center">

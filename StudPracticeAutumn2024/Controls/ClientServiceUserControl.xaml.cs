@@ -1,6 +1,7 @@
 ﻿using StudPracticeAutumn2024.DATABASE;
 using System;
 using System.Collections.Generic;
+using System.Data.Entity;
 using System.IO;
 using System.Linq;
 using System.Text;
@@ -18,20 +19,28 @@ using System.Windows.Shapes;
 
 namespace StudPracticeAutumn2024.Controls
 {
-    /// <summary>
-    /// Логика взаимодействия для ClientServiceUserControl.xaml
-    /// </summary>
+    //public class People
+    //{
+    //    public int Id { get; set; }
+    //    public string FirstName { get; set; }
+    //    public string LastName { get; set; }
+    //    public string Patronymic { get; set; }
+    //}
+
+
     public partial class ClientServiceUserControl : UserControl
     {
         private string text;
         private NavigationService _navigationService;
         private Service ser;
-        //private Client client1;
         public ClientServiceUserControl(Service service)
         {
             InitializeComponent();
             ser = service;
             TitleServiceTB.Text = ser.Title.ToString();
+            LoadDataComboBox();
+
+
 
             // Получить путь к папке "ресурс" относительно папки, в которой находится исполняемый файл
             var imagesBD = App.db.ServicePhoto.FirstOrDefault(x => x.ID == ser.ServicePhotoID).PhotoPath.ToString();
@@ -53,6 +62,7 @@ namespace StudPracticeAutumn2024.Controls
             }
             else
             {
+                myGrid.Background = new SolidColorBrush(Colors.LightBlue);
                 CostAndTimeTB.Text = $"{ser.Cost.Value.ToString("0.#")} рублей за {ser.DurationInMinutes.ToString()} минут";
                 DiscountTB.Text = "";
             }
@@ -65,11 +75,6 @@ namespace StudPracticeAutumn2024.Controls
                 return;
             Frame mainFrame = LogicalTreeHelper.FindLogicalNode(window, "MainFrame") as Frame;
             mainFrame?.Navigate(content);
-        }
-
-        private void Button_Click_Edit(object sender, RoutedEventArgs e)
-        {
-
         }
 
         private void RemoveText(object sender, RoutedEventArgs e)
@@ -99,7 +104,6 @@ namespace StudPracticeAutumn2024.Controls
                 return;
             }
 
-            // Проверка первых двух символов (часы)
             if (text.Length < 2)
             {
                 // Первый символ должен быть от 0 до 2
@@ -123,11 +127,12 @@ namespace StudPracticeAutumn2024.Controls
             // Третий символ должен быть двоеточием
             else if (text.Length == 2)
             {
+                // Принудительно добавляем двоеточие и запрещаем передавать введенный символ дальше
                 if (e.Text != ":")
                 {
-                    myTextBox.Text += ":" + e.Text;
-                    myTextBox.CaretIndex = myTextBox.Text.Length;
-                    e.Handled = true;
+                    myTextBox.Text += ":";
+                    myTextBox.CaretIndex = myTextBox.Text.Length;  // Устанавливаем курсор в конец текста
+                    e.Handled = true;  // Игнорируем вводимый символ
                 }
             }
             // Проверка четвертого символа (первые цифры минут)
@@ -148,11 +153,65 @@ namespace StudPracticeAutumn2024.Controls
             }
 
             // Запрещаем ввод любых символов, кроме цифр и двоеточия
-            if (e.Handled == false)
+            if (!e.Handled)
             {
                 e.Handled = !Regex.IsMatch(e.Text, @"[0-9:]");
             }
+
             text += ":00";
+        }
+
+        public void LoadDataComboBox()
+        {
+            try
+            {
+                var context = App.db.Client;
+                // Создаем список объединенных строк (FirstName, LastName, Patronymic)
+                var peopleList = context
+                    .Select(p => new
+                    {
+                        FullName = p.FirstName + " " + p.LastName + " " + (p.Patronymic ?? "")
+                    })
+                    .ToList();
+
+                // Привязываем список к ComboBox через ItemSource
+                ListFIOCB.ItemsSource = peopleList.Select(p => p.FullName).ToList();
+
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show("Ошибка при получении данных: " + ex.Message);
+            }
+        }
+
+        private void Button_Click_Registration(object sender, RoutedEventArgs e)
+        {
+            ClientService clientService = new ClientService();
+            var selectedDate = DateDP.SelectedDate; // Получаем выбранную дату из DatePicker
+            try
+            {
+                clientService.ClientID = ListFIOCB.SelectedIndex + 1;
+                clientService.ServiceID = ser.ID;
+                if (selectedDate.HasValue) // Проверяем, выбрана ли дата
+                {
+                    // Объединяем дату и время
+                    var dateTimeString = $"{selectedDate.Value.ToString("yyyy-MM-dd")} {text}"; // text = "10:10:00"
+                    clientService.StartTime = DateTime.Parse(dateTimeString); // Преобразуем в DateTime
+                }
+
+                App.db.ClientService.Add(clientService);
+                App.db.SaveChanges();
+                MessageBox.Show("Запись прошла успешно!");
+                NavigateTo(new Pages.ClientViewService());
+            }
+            catch (FormatException ex)
+            {
+                MessageBox.Show("Ошибка формата: " + ex.Message);
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show("Ошибка: " + ex.Message);
+            }
         }
     }
 }

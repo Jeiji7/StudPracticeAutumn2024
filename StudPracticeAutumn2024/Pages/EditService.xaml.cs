@@ -39,6 +39,7 @@ namespace StudPracticeAutumn2024.Pages
             string fullPath = System.IO.Path.Combine(projectDirectory, folderName, imagesBD);
 
             //Заменяем обратные слеши на прямые слеши
+            IDServiceTB.Text = "Идентификатор: " + ser.ID.ToString();
             ImageService.Source = new BitmapImage(new Uri(fullPath, UriKind.Absolute));
             TitleServiceTBox.Text = ser.Title.ToString();
             CostTBox.Text = ser.Cost.ToString();

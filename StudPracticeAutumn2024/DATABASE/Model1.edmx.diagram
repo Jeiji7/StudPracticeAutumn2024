@@ -4,7 +4,7 @@
   <edmx:Designer xmlns="http://schemas.microsoft.com/ado/2009/11/edmx">
     <!-- Diagram content (shape and connector positions) -->
     <edmx:Diagrams>
-      <Diagram DiagramId="5c0f68dcdf2d480f99656baa43d158c5" Name="Diagram1">
+      <Diagram DiagramId="bcecdb74cc574bc3a282f3ecb0ada343" Name="Diagram1">
         <EntityTypeShape EntityType="SchollModel.Admin" Width="1.5" PointX="7.75" PointY="2.125" IsExpanded="true" />
         <EntityTypeShape EntityType="SchollModel.Client" Width="1.5" PointX="0.75" PointY="7.375" IsExpanded="true" />
         <EntityTypeShape EntityType="SchollModel.ClientService" Width="1.5" PointX="3" PointY="9.5" IsExpanded="true" />
@@ -16,6 +16,7 @@
         <EntityTypeShape EntityType="SchollModel.ProductSale" Width="1.5" PointX="5.25" PointY="0.75" IsExpanded="true" />
         <EntityTypeShape EntityType="SchollModel.Service" Width="1.5" PointX="0.75" PointY="16.75" IsExpanded="true" />
         <EntityTypeShape EntityType="SchollModel.ServicePhoto" Width="1.5" PointX="1.5" PointY="20.125" IsExpanded="true" />
+        <EntityTypeShape EntityType="SchollModel.sysdiagrams" Width="1.5" PointX="5.75" PointY="7.125" IsExpanded="true" />
         <EntityTypeShape EntityType="SchollModel.Tag" Width="1.5" PointX="3" PointY="16.25" IsExpanded="true" />
         <AssociationConnector Association="SchollModel.FK_Client_Gender" ManuallyRouted="false" />
         <AssociationConnector Association="SchollModel.FK_ClientService_Client" ManuallyRouted="false" />

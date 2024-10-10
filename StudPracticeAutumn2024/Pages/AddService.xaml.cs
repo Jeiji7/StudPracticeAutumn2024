@@ -35,10 +35,10 @@ namespace StudPracticeAutumn2024.Pages
 
             ////Заменяем обратные слеши на прямые слеши
             //ImageService.Source = new BitmapImage(new Uri(fullPath, UriKind.Absolute));
-            //TitleServiceTBox.Text = ser.Title.ToString();
+            //TitleServiceTBox.Text = "Индивидуальный онлайн-урок японского языка по Skype1";
             //CostTBox.Text = ser.Cost.ToString();
             //TimeTBox.Text = ser.DurationInMinutes.ToString();
-            //DiscountTBox.Text = ser.Discount.ToString();
+            //DiscountTBox.Text = App.db.Service.FirstOrDefault(s => s.Title == TitleServiceTBox.Text).ID.ToString();
         }
 
         private void Button_Click_Exit(object sender, RoutedEventArgs e)
@@ -59,7 +59,12 @@ namespace StudPracticeAutumn2024.Pages
             //NavigationService.Navigate(new Pages.EnterPage());
             try
             {
-                if (TitleServiceTBox.Text == "" || (Convert.ToDecimal(CostTBox.Text) <= 0 || CostTBox.Text == ""))
+                var service = App.db.Service.FirstOrDefault(s => s.Title == TitleServiceTBox.Text);
+                if (service != null)
+                {
+                    throw new FormatException("Такое название уже есть");
+                }
+                if (TitleServiceTBox.Text == ""  || (Convert.ToDecimal(CostTBox.Text) <= 0 || CostTBox.Text == ""))
                 {
                     throw new FormatException("Название или цена не указаны");
                 }
@@ -69,7 +74,7 @@ namespace StudPracticeAutumn2024.Pages
                     ser.Cost = Convert.ToDecimal(CostTBox.Text);
 
                 }
-                if (TimeTBox.Text == "" || Convert.ToInt32(TimeTBox.Text) >= 240)
+                if (TimeTBox.Text == "" || Convert.ToInt32(TimeTBox.Text) >= 240 || Convert.ToInt32(TimeTBox.Text) <= 0)
                 {
                     throw new Exception("Время введено не корректно, сеанс должен быть меньше 240 минут и больше 0");
                 }

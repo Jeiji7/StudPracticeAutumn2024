@@ -21,6 +21,7 @@
             <Grid Background="#e7fabf">
                 <StackPanel Orientation="Horizontal">
                     <StackPanel HorizontalAlignment="Left" VerticalAlignment="Center">
+                        <TextBlock Margin="10 10" FontSize="20" HorizontalAlignment="Center" x:Name="IDServiceTB"></TextBlock>
                         <Button Margin="20 0 20 0" Click="Button_Click_Image">
                             <Image  Width="180" Height="180" x:Name="ImageService"></Image>
                         </Button>

@@ -1,8 +1,9 @@
-﻿using System;
+﻿using StudPracticeAutumn2024.DATABASE;
+using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
-using System.Runtime.Remoting.Contexts;
+using System.Runtime.ConstrainedExecution;
 using System.Text;
 using System.Threading.Tasks;
 using System.Windows;
@@ -14,24 +15,19 @@ using System.Windows.Media;
 using System.Windows.Media.Imaging;
 using System.Windows.Navigation;
 using System.Windows.Shapes;
-using StudPracticeAutumn2024.DATABASE;
-using StudPracticeAutumn2024.Pages;
 
 namespace StudPracticeAutumn2024.Controls
 {
     /// <summary>
-    /// Логика взаимодействия для ServiceUserControl.xaml
+    /// Логика взаимодействия для CommonUserControl.xaml
     /// </summary>
-    public partial class ServiceUserControl : UserControl
+    public partial class CommonUserControl : UserControl
     {
-        private NavigationService _navigationService;
         private Service ser;
-        private Action _isRemove;
-        public ServiceUserControl(Service service, Action isRemove)
+        public CommonUserControl(Service service)
         {
             InitializeComponent();
             ser = service;
-            _isRemove = isRemove;
             TitleServiceTB.Text = ser.Title.ToString();
 
             // Получить путь к папке "ресурс" относительно папки, в которой находится исполняемый файл
@@ -49,8 +45,7 @@ namespace StudPracticeAutumn2024.Controls
                 //Зачёркнутый текст
                 textDecorate.Text = $"{ser.Cost.Value.ToString("0.#")}";
                 textDecorate.TextDecorations = TextDecorations.Strikethrough;
-
-                CostAndTimeTB.Text = $"{(((double?)ser.Cost) - ((double?)ser.Cost) * ser.Discount / 100)} рублей за {ser.DurationInMinutes.ToString()} минут";
+                CostAndTimeTB.Text = $"{((((double?)ser.Cost) - ((double?)ser.Cost) * ser.Discount / 100)).ToString()} рублей за {ser.DurationInMinutes.ToString()} минут";
                 DiscountTB.Text = $"* скидка {ser.Discount.ToString()}%";
             }
             else
@@ -61,30 +56,5 @@ namespace StudPracticeAutumn2024.Controls
             }
 
         }
-        private void NavigateTo(object content)
-        {
-            Window window = Window.GetWindow(this);
-
-            if (window == null)
-                return;
-            Frame mainFrame = LogicalTreeHelper.FindLogicalNode(window, "MainFrame") as Frame;
-            mainFrame?.Navigate(content);
-        }
-
-        private void Button_Click_Delete(object sender, RoutedEventArgs e)
-        {
-            App.db.Service.Remove(ser);
-            App.db.SaveChanges();
-            _isRemove.Invoke();
-            MessageBox.Show("Успешно удалено");
-
-        }
-
-        private void Button_Click_Edit(object sender, RoutedEventArgs e)
-        {
-            NavigateTo(new Pages.EditService(ser));
-        }
-
-
     }
 }

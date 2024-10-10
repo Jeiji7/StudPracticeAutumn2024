@@ -23,8 +23,15 @@ namespace StudPracticeAutumn2024
         public MainWindow()
         {
             InitializeComponent();
-            MainFrame.Navigate(new Pages.ClientViewService());
-
+            MainFrame.Navigate(new Pages.AuthorizationPage());
+            //try
+            //{
+            //    InitializeComponent();
+            //}
+            //catch (Exception ex)
+            //{
+            //    MessageBox.Show($"Ошибка инициализации: {ex.Message}");
+            //}
         }
     }
 }
