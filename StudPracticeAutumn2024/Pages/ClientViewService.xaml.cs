@@ -39,7 +39,12 @@ namespace StudPracticeAutumn2024.Pages
 
         private void Button_Click_ViewService(object sender, RoutedEventArgs e)
         {
+            NavigationService.Navigate(new Pages.ClientServiseListView());
+        }
 
+        private void Button_Click_GoBack(object sender, RoutedEventArgs e)
+        {
+            NavigationService.Navigate(new Pages.EnterPage());
         }
     }
 }

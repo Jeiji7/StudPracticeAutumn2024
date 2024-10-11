@@ -27,7 +27,7 @@
                              GotFocus="RemoveText"
                              Foreground="Gray"
                              LostFocus="TextBox_LostFocus"
-                             PreviewTextInput="myTextBox_PreviewTextInput"/>
+                             PreviewTextInput="myTextBox_PreviewTextInput" TextChanged="myTextBox_TextChanged"/>
                     </StackPanel>
                     <ComboBox x:Name="ListFIOCB"></ComboBox>
                 </StackPanel>

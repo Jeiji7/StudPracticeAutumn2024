@@ -30,7 +30,7 @@ namespace StudPracticeAutumn2024.Controls
 
     public partial class ClientServiceUserControl : UserControl
     {
-        private string text;
+        private string text = "";
         private NavigationService _navigationService;
         private Service ser;
         public ClientServiceUserControl(Service service)
@@ -157,8 +157,6 @@ namespace StudPracticeAutumn2024.Controls
             {
                 e.Handled = !Regex.IsMatch(e.Text, @"[0-9:]");
             }
-
-            text += ":00";
         }
 
         public void LoadDataComboBox()
@@ -186,22 +184,60 @@ namespace StudPracticeAutumn2024.Controls
 
         private void Button_Click_Registration(object sender, RoutedEventArgs e)
         {
+            // Проверка: выбрана ли дата в DatePicker
+            if (DateDP.SelectedDate == null)
+            {
+                MessageBox.Show("Пожалуйста, выберите дату.");
+                return; // Прерываем выполнение метода, если дата не выбрана
+            }
+
+            // Проверка: выбрано ли значение в ComboBox
+            if (ListFIOCB.SelectedIndex == -1)
+            {
+                MessageBox.Show("Пожалуйста, выберите клиента.");
+                return; // Прерываем выполнение метода, если клиент не выбран
+            }
+
+            // Проверка строки времени
+            if (string.IsNullOrWhiteSpace(text) || text.Length != 5)
+            {
+                MessageBox.Show("Пожалуйста, введите корректное время в формате HH:mm.");
+                return; // Прерываем выполнение метода, если время не введено или введено неправильно
+            }
+
+            // Добавляем ":00", если длина строки 5 символов (часы и минуты)
+            text += ":00";
+
             ClientService clientService = new ClientService();
-            var selectedDate = DateDP.SelectedDate; // Получаем выбранную дату из DatePicker
+            var selectedDate = DateDP.SelectedDate.Value; // Получаем выбранную дату
+
             try
             {
-                clientService.ClientID = ListFIOCB.SelectedIndex + 1;
-                clientService.ServiceID = ser.ID;
-                if (selectedDate.HasValue) // Проверяем, выбрана ли дата
+                // Устанавливаем данные клиента и услуги
+                clientService.ClientID = ListFIOCB.SelectedIndex + 1; // Индекс клиента
+                clientService.ServiceID = ser.ID; // ID услуги
+
+                // Объединяем дату и время
+                string dateTimeString = $"{selectedDate:yyyy-MM-dd} {text}";
+                DateTime dateTimeValue;
+
+                // Проверяем корректность преобразования строки в DateTime
+                if (DateTime.TryParse(dateTimeString, out dateTimeValue))
                 {
-                    // Объединяем дату и время
-                    var dateTimeString = $"{selectedDate.Value.ToString("yyyy-MM-dd")} {text}"; // text = "10:10:00"
-                    clientService.StartTime = DateTime.Parse(dateTimeString); // Преобразуем в DateTime
+                    clientService.StartTime = dateTimeValue; // Присваиваем время старта
+                }
+                else
+                {
+                    MessageBox.Show("Ошибка при преобразовании строки времени.");
+                    return; // Прерываем выполнение метода, если ошибка преобразования
                 }
 
+                // Добавляем запись в базу данных
                 App.db.ClientService.Add(clientService);
                 App.db.SaveChanges();
                 MessageBox.Show("Запись прошла успешно!");
+
+                // Переход на другую страницу после успешной записи
                 NavigateTo(new Pages.ClientViewService());
             }
             catch (FormatException ex)
@@ -210,8 +246,14 @@ namespace StudPracticeAutumn2024.Controls
             }
             catch (Exception ex)
             {
-                MessageBox.Show("Ошибка: " + ex.Message);
+                MessageBox.Show("Произошла ошибка: " + ex.Message);
             }
+        }
+
+
+        private void myTextBox_TextChanged(object sender, TextChangedEventArgs e)
+        {
+
         }
     }
 }

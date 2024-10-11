@@ -139,12 +139,6 @@ namespace StudPracticeAutumn2024.Pages
         {
             UpdatePage();
         }
-
-
-
-
-
-
         private void Button_Click_AddService(object sender, RoutedEventArgs e)
         {
             NavigationService.Navigate(new Pages.AddService());
@@ -152,7 +146,7 @@ namespace StudPracticeAutumn2024.Pages
 
         private void Button_Click_SeeServiceRecord(object sender, RoutedEventArgs e)
         {
-
+            NavigationService.Navigate(new Pages.ClientServiseListView());
         }
 
         private void Button_Click_ClientViewService(object sender, RoutedEventArgs e)
