@@ -30,7 +30,6 @@ namespace StudPracticeAutumn2024.Pages
         private DispatcherTimer dispatcherTimer;
 
         private List<ClientService> clientSer = new List<ClientService>();
-        public bool activeRecord;
         public ClientServiseListView()
         {
             InitializeComponent();
@@ -59,7 +58,7 @@ namespace StudPracticeAutumn2024.Pages
             SortingDateTime();
             foreach (var item in clientSer)
             {
-                ServiceWpar.Children.Add(new RecordUserControl(item, activeRecord));
+                ServiceWpar.Children.Add(new RecordUserControl(item));
             }
         }
 
@@ -77,20 +76,17 @@ namespace StudPracticeAutumn2024.Pages
                         .Where(c => c.StartTime.Date == currentDate)
                         .OrderBy(c => c.StartTime)
                         .ToList();
-                    ColorTextBlock();
                     break;
                 case 1: // "Завтра"
                     clientSer = clientSer
                         .Where(c => c.StartTime.Date == tomorrow)
                         .OrderBy(c => c.StartTime)
                         .ToList();
-                    ColorTextBlock();
                     break;
                 case 2: // "Все"
                     clientSer = App.db.ClientService
                         .OrderByDescending(c => c.StartTime)
                         .ToList();
-                    ColorTextBlock();
                     break;
             }
         }
@@ -98,24 +94,6 @@ namespace StudPracticeAutumn2024.Pages
         {
             UpdateData();
         }
-
-        private void ColorTextBlock()
-        {
-            DateTime currentTime = DateTime.Now;
-            foreach (var client in clientSer)
-            {
-                if (client.StartTime.Subtract(currentTime).TotalHours <= 1 && client.StartTime > currentTime)
-                {
-                    activeRecord = true;
-                }
-                else
-                {
-                    activeRecord = false;
-                }
-            }
-        }
-
-
         private void Button_Click_GoBack(object sender, RoutedEventArgs e)
         {
             if (dispatcherTimer != null && dispatcherTimer.IsEnabled)

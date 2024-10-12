@@ -17,6 +17,7 @@
         <Grid Grid.RowSpan="3">
             <Image Source="/Resource/Fon2.jpg"/>
         </Grid>
+                <TextBlock Grid.Row="0" VerticalAlignment="Center" HorizontalAlignment="Center" FontSize="48">Редактирование услуги</TextBlock>
         <Border Grid.Row="1" BorderBrush="#A37D4E" BorderThickness="2" Margin="3">
             <Grid Background="#e7fabf">
                 <StackPanel Orientation="Horizontal">

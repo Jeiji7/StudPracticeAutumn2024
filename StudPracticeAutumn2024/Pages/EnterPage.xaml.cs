@@ -42,16 +42,19 @@ namespace StudPracticeAutumn2024.Pages
         public void UpdatePage()
         {
             ServiceWpar.Children.Clear();
-            service = App.db.Service.ToList();
-            serviceCount = service.Count; 
-            SortingCost();
-            SortingSearch();
-            SortingDiscount();
+            service = App.db.Service.ToList(); // Загружаем из базы
+            serviceCount = service.Count;
+
+            SortingSearch();    // Сначала фильтруем по поиску
+            SortingDiscount();  // Потом фильтруем по скидке
+            SortingCost();      // И только потом сортируем по цене
+
             currentServiceCount = service.Count;
             foreach (var item in service)
             {
-                ServiceWpar.Children.Add(new ServiceUserControl(item,OnItemRemoved));
+                ServiceWpar.Children.Add(new ServiceUserControl(item, OnItemRemoved));
             }
+
             CountServiceTB.Text = $"{currentServiceCount}/{serviceCount}";
         }
 
@@ -129,6 +132,7 @@ namespace StudPracticeAutumn2024.Pages
         private void CostMaxMinCB_SelectionChanged(object sender, SelectionChangedEventArgs e)
         {
             UpdatePage();
+            Console.WriteLine("gg");
         }
 
         private void SearchTB_TextChanged(object sender, TextChangedEventArgs e)
